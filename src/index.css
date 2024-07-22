@@ -1,0 +1,9 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.h-screen {
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+}
