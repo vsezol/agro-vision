@@ -9,7 +9,7 @@ export const Layout = () => {
       <Flex vertical className="h-screen">
         <Header />
 
-        <UiLayout.Content style={{ flexGrow: 1 }}>
+        <UiLayout.Content style={{ flexGrow: 1, height: "100%" }}>
           <Outlet />
         </UiLayout.Content>
 

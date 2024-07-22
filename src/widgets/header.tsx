@@ -5,7 +5,7 @@ import { NavMenu } from "./nav-menu";
 
 export const Header = () => {
   return (
-    <Layout.Header>
+    <Layout.Header style={{ marginBottom: 1 }}>
       <Flex align="center" justify="space-between" style={{ height: "100%" }}>
         <Flex align="center" justify="space-between">
           <Logo />

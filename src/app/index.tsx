@@ -13,7 +13,11 @@ function App() {
       <ConfigProvider
         theme={{
           token: {
-            fontSize: 12,
+            fontSize: theme.font.text.size,
+            fontSizeHeading1: theme.font.h1.size,
+            fontSizeHeading2: theme.font.h2.size,
+            fontSizeHeading3: theme.font.h3.size,
+            colorTextHeading: theme.colors.active,
           },
           components: {
             Layout: {
@@ -26,6 +30,13 @@ function App() {
               horizontalItemSelectedColor: theme.colors.active,
               itemColor: theme.colors.gray,
               fontSize: 16,
+            },
+            Select: {
+              borderRadiusLG: 4,
+              fontSizeLG: 16,
+              optionFontSize: 16,
+              optionSelectedFontWeight: 400,
+              colorText: theme.colors.active,
             },
           },
         }}

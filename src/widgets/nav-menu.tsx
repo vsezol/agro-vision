@@ -46,6 +46,7 @@ export const NavMenu = () => {
         justifyContent: "center",
         fontWeight: 500,
         textTransform: "uppercase",
+        border: "none",
       }}
     />
   );

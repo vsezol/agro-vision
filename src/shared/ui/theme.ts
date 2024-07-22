@@ -6,6 +6,12 @@ export interface Theme {
     gray: string;
     darkGray: string;
   };
+  font: Record<"h1" | "h2" | "h3" | "text", Text>;
+}
+
+export interface Text {
+  weight: number;
+  size: number;
 }
 
 export const theme: Theme = {
@@ -15,5 +21,23 @@ export const theme: Theme = {
     active: "#111111",
     gray: "#BCBCBC",
     darkGray: "#707070",
+  },
+  font: {
+    h1: {
+      weight: 700,
+      size: 24,
+    },
+    h2: {
+      weight: 400,
+      size: 18,
+    },
+    h3: {
+      weight: 500,
+      size: 14,
+    },
+    text: {
+      weight: 500,
+      size: 12,
+    },
   },
 };
