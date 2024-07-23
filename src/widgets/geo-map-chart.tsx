@@ -1,0 +1,95 @@
+import { Typography } from "antd";
+import { useMemo, useState } from "react";
+import { generateGradientColors, hexToRgb, rgbToHex } from "../shared/lib";
+import { GeoMap, GeoMapDistrict } from "../shared/ui/geo-map-chart";
+
+const { Text } = Typography;
+
+export interface GeoMapChartProps {
+  startColor: string;
+  endColor: string;
+  districts: GeoMapChartDistrict[];
+  selectedId?: string;
+  onSelect?: (id: string | undefined) => unknown;
+  sortFn?: (a: GeoMapChartDistrict, b: GeoMapChartDistrict) => number;
+}
+
+export interface GeoMapChartDistrict {
+  id: string;
+  label: string;
+  value: number;
+}
+
+interface TooltipData {
+  x: number;
+  y: number;
+  text: string;
+}
+
+export const GeoMapChart = ({
+  startColor,
+  endColor,
+  districts,
+  selectedId,
+  onSelect,
+  sortFn = (a, b) => a.value - b.value,
+}: GeoMapChartProps) => {
+  const [tooltip, setTooltip] = useState<TooltipData | undefined>(undefined);
+
+  const mapDistricts: GeoMapDistrict[] = useMemo(() => {
+    const size = districts.length;
+    const colors = generateGradientColors(
+      hexToRgb(startColor),
+      hexToRgb(endColor),
+      size
+    );
+    return [...districts].sort(sortFn).map((x, index) => ({
+      id: x.id,
+      color: rgbToHex(colors[index]),
+      label: x.label,
+    }));
+  }, [startColor, endColor, districts, sortFn]);
+
+  return (
+    <>
+      {tooltip && (
+        <div
+          style={{
+            position: "absolute",
+            left: `${tooltip.x}px`,
+            top: `${tooltip.y}px`,
+            transition: "all 150ms",
+            transform: `translate(-50%, -50%)`,
+            backgroundColor: "rgba(255, 255, 255, 0.85)",
+            padding: "0px 4px 0px 4px",
+            borderRadius: 4,
+            zIndex: 100,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: 500,
+            }}
+          >
+            {tooltip?.text}
+          </Text>
+        </div>
+      )}
+
+      <GeoMap
+        districts={mapDistricts}
+        selectedId={selectedId}
+        onSelect={onSelect}
+        onHover={({ position, district }) => {
+          setTooltip({ ...position, text: district.label });
+          onSelect?.(district.id);
+        }}
+        onHoverOut={() => {
+          setTooltip(undefined);
+          onSelect?.(undefined);
+        }}
+      />
+    </>
+  );
+};

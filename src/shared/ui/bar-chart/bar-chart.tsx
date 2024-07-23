@@ -1,5 +1,5 @@
 import { Flex, Typography } from "antd";
-import { theme } from "../../shared/ui/theme";
+import { theme } from "../theme";
 import { Bar, BarItem } from "./bar";
 
 const { Title, Text } = Typography;

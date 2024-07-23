@@ -1,21 +1,21 @@
 import { Flex, Typography } from "antd";
 import { PropsWithChildren } from "react";
-import { theme } from "../../shared/ui/theme";
+import { theme } from "../theme";
 
 const { Title } = Typography;
 
-export type GeoMapChartLegendProps = {
+export type GeoMapLegendProps = {
   title: string;
   unit?: string;
   width?: string;
 } & PropsWithChildren;
 
-export const GeoMapChartLegend = ({
+export const GeoMapLegend = ({
   children,
   title,
   unit,
   width = "324px",
-}: GeoMapChartLegendProps) => {
+}: GeoMapLegendProps) => {
   return (
     <Flex
       style={{

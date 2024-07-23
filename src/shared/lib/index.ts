@@ -1,4 +1,6 @@
+export { debounce } from "./debounce";
 export { generateGradientColors } from "./generate-gradient-colors";
+export { hasKey } from "./has-key";
 export { hexToRgb } from "./hex-to-rgb";
 export type { RGB } from "./rgb";
 export { rgbToHex } from "./rgb-to-hex";

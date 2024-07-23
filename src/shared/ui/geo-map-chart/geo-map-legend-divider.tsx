@@ -1,5 +1,5 @@
 import { Divider } from "antd";
 
-export const GeoMapChartLegendDivider = () => {
+export const GeoMapLegendDivider = () => {
   return <Divider style={{ margin: 0 }} />;
 };

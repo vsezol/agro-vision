@@ -1,144 +1,65 @@
-import { Flex, Select, SelectProps } from "antd";
+import { Typography } from "antd";
 import { useState } from "react";
-import { generateGradientColors, hexToRgb, rgbToHex } from "../shared/lib";
-import { CircleFillIcon } from "../shared/ui/circle-fill-icon";
-import { CircleIcon } from "../shared/ui/circle-icon";
-import { theme } from "../shared/ui/theme";
-import { BarChart, BarItem } from "../widgets/bar-chart";
 import {
-  GeoMap,
-  GeoMapChartLegend,
-  GeoMapChartLegendDivider,
-  GeoMapChartLegendItem,
-} from "../widgets/geo-map-chart";
+  GeoMapLegend,
+  GeoMapLegendDivider,
+  GeoMapLegendItem,
+} from "../shared/ui/geo-map-chart";
+import { GeoBarChart } from "../widgets/geo-bar-chart";
+import { GeoMapChart, GeoMapChartDistrict } from "../widgets/geo-map-chart";
 import { GeoMapLayout } from "../widgets/geo-map-layout";
 
-const startColor = "#03A609";
-const endColor = "#FFDD9C";
+const { Title } = Typography;
 
-const items: BarItem[] = generateGradientColors(
-  hexToRgb(startColor),
-  hexToRgb(endColor),
-  14
-).map((color) => ({
-  color: rgbToHex(color),
-}));
+interface RatingItem {
+  label: string;
+}
 
-const options: SelectProps["options"] = [
-  {
-    label: "Урожайность зерновых",
-    value: "1",
-  },
-  {
-    label: "Урожайность подсолнечника",
-    value: "2",
-  },
-  {
-    label: "Урожайность картофеля",
-    value: "3",
-  },
-  {
-    label: "Урожайность овощей открытого грунта",
-    value: "4",
-  },
-  {
-    label: "Гумус",
-    value: "5",
-  },
-  {
-    label: "Градация почв",
-    value: "6",
-  },
-  {
-    label: "Средняя кадастровая стоимость",
-    value: "7",
-  },
-];
+export default function Rating() {
+  const [selected, setSelected] = useState<string | undefined>(undefined);
 
-export default function Main() {
-  const [value, setValue] = useState("1");
+  const ratingItems: RatingItem[] = new Array(20)
+    .fill("Башмаковский")
+    .map((label) => ({ label }));
+
+  const districts: GeoMapChartDistrict[] = new Array(27)
+    .fill("")
+    .map((_, i) => ({ id: `${i + 1}`, value: i, label: `District ${i + 1}` }));
 
   return (
     <GeoMapLayout
       headerLeft={
-        <Select
-          labelRender={({ value }) =>
-            options?.find((x) => x.value === value)?.label
-          }
-          style={{ width: "100%" }}
-          size="large"
-          onChange={(value) => setValue(value)}
-          value={value}
-          defaultValue={"1"}
-        >
-          {options?.map((x) => (
-            <Select.Option key={x.value} value={x.value}>
-              <Flex gap={12} align="center" style={{ overflow: "hidden" }}>
-                <Flex>
-                  {value === x.value ? (
-                    <CircleFillIcon color={theme.colors.active} />
-                  ) : (
-                    <CircleIcon color={theme.colors.active} />
-                  )}
-                </Flex>
-
-                <div>{x.label}</div>
-              </Flex>
-            </Select.Option>
-          ))}
-        </Select>
+        <Title style={{ textTransform: "uppercase", margin: 0 }}>
+          Пензенская область
+        </Title>
       }
       headerRight={
-        <BarChart
-          title="Урожайность картофеля, т/га"
-          items={items}
-          itemWidth={38}
-          legend={["Высокая", "Низкая"]}
+        <GeoBarChart
+          title="Уровень плодородия с/х земель"
+          legend={["Лучшая", "Худшая"]}
+          startColor="#03A609"
+          endColor="#D0D2CD"
+          size={14}
         />
       }
-      map={<GeoMap />}
+      map={
+        <GeoMapChart
+          selectedId={selected}
+          onSelect={(id) => setSelected(id)}
+          startColor="#03A609"
+          endColor="#D0D2CD"
+          districts={districts}
+        />
+      }
       legend={
-        <GeoMapChartLegend title="Содержание" unit="%">
-          <GeoMapChartLegendItem title="Башмаковский" value="12.9" />
-          <GeoMapChartLegendDivider />
-          <GeoMapChartLegendItem title="Сосновоборовский" value="12.9" />
-          <GeoMapChartLegendDivider />
-          <GeoMapChartLegendItem title="Сосновоборовский" value="12.9" />
-          <GeoMapChartLegendDivider />
-          <GeoMapChartLegendItem title="Сосновоборовский" value="12.9" />
-          <GeoMapChartLegendDivider />
-          <GeoMapChartLegendItem title="Сосновоборовский" value="12.9" />
-          <GeoMapChartLegendDivider />
-          <GeoMapChartLegendItem title="Сосновоборовский" value="12.9" />
-          <GeoMapChartLegendDivider />
-          <GeoMapChartLegendItem title="Сосновоборовский" value="12.9" />
-          <GeoMapChartLegendDivider />
-          <GeoMapChartLegendItem title="Сосновоборовский" value="12.9" />
-          <GeoMapChartLegendDivider />
-          <GeoMapChartLegendItem title="Сосновоборовский" value="12.9" />
-          <GeoMapChartLegendDivider />
-          <GeoMapChartLegendItem title="Сосновоборовский" value="12.9" />
-          <GeoMapChartLegendDivider />
-          <GeoMapChartLegendItem title="Сосновоборовский" value="12.9" />
-          <GeoMapChartLegendDivider />
-          <GeoMapChartLegendItem title="Сосновоборовский" value="12.9" />
-          <GeoMapChartLegendDivider />
-          <GeoMapChartLegendItem title="Сосновоборовский" value="12.9" />
-          <GeoMapChartLegendDivider />
-          <GeoMapChartLegendItem title="Сосновоборовский" value="12.9" />
-          <GeoMapChartLegendDivider />
-          <GeoMapChartLegendItem title="Сосновоборовский" value="12.9" />
-          <GeoMapChartLegendDivider />
-          <GeoMapChartLegendItem title="Сосновоборовский" value="12.9" />
-          <GeoMapChartLegendDivider />
-          <GeoMapChartLegendItem title="Сосновоборовский" value="12.9" />
-          <GeoMapChartLegendDivider />
-          <GeoMapChartLegendItem title="Сосновоборовский" value="12.9" />
-          <GeoMapChartLegendDivider />
-          <GeoMapChartLegendItem title="Сосновоборовский" value="12.9" />
-          <GeoMapChartLegendDivider />
-          <GeoMapChartLegendItem title="Сосновоборовский" value="12.9" />
-        </GeoMapChartLegend>
+        <GeoMapLegend title="Общий рейтинг">
+          {ratingItems.map(({ label }, index) => (
+            <div key={index}>
+              {index !== 0 && <GeoMapLegendDivider />}
+              <GeoMapLegendItem prefix={index + 1} title={label} />
+            </div>
+          ))}
+        </GeoMapLegend>
       }
     />
   );
