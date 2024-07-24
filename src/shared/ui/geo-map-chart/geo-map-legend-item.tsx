@@ -10,6 +10,7 @@ export type GeoMapLegendItemProps = {
   title: string;
   value?: string;
   active?: boolean;
+  onHover?: () => unknown;
   onSelect?: () => unknown;
 } & PropsWithChildren;
 
@@ -18,6 +19,7 @@ export const GeoMapLegendItem = ({
   title,
   value,
   active = false,
+  onHover,
   onSelect,
 }: GeoMapLegendItemProps) => {
   const [lastActive] = usePrevious(active, 1);
@@ -53,7 +55,8 @@ export const GeoMapLegendItem = ({
         backgroundColor: active ? "#F8F8F8" : "transparent",
         cursor: "pointer",
       }}
-      onMouseMove={() => onSelect?.()}
+      onClick={() => onSelect?.()}
+      onMouseMove={() => onHover?.()}
     >
       <Flex gap={12} align="center">
         {prefix !== undefined && (

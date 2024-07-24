@@ -38,6 +38,7 @@ function App() {
               optionSelectedFontWeight: 400,
               colorText: theme.colors.active,
             },
+            Modal: {},
           },
         }}
       >

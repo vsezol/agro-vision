@@ -1,5 +1,6 @@
 import { Typography } from "antd";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { generateGradientColors, hexToRgb, rgbToHex } from "../shared/lib";
 import { GeoMap, GeoMapDistrict, GeoMapRef } from "../shared/ui/geo-map-chart";
 
@@ -70,30 +71,32 @@ export const GeoMapChart = ({
 
   return (
     <>
-      {tooltip && (
-        <div
-          style={{
-            position: "absolute",
-            left: `${tooltip.x}px`,
-            top: `${tooltip.y}px`,
-            transition: "all 150ms",
-            transform: `translate(-50%, -50%)`,
-            backgroundColor: "rgba(255, 255, 255, 0.85)",
-            padding: "0px 4px 0px 4px",
-            borderRadius: 4,
-            zIndex: 100,
-          }}
-        >
-          <Text
+      {tooltip &&
+        createPortal(
+          <div
             style={{
-              fontSize: 16,
-              fontWeight: 500,
+              position: "absolute",
+              left: `${tooltip.x}px`,
+              top: `${tooltip.y}px`,
+              transition: "all 150ms",
+              transform: `translate(-50%, -50%)`,
+              backgroundColor: "rgba(255, 255, 255, 0.85)",
+              padding: "0px 4px 0px 4px",
+              borderRadius: 4,
+              zIndex: 100,
             }}
           >
-            {tooltip?.text}
-          </Text>
-        </div>
-      )}
+            <Text
+              style={{
+                fontSize: 16,
+                fontWeight: 500,
+              }}
+            >
+              {tooltip?.text}
+            </Text>
+          </div>,
+          document.body
+        )}
 
       <GeoMap
         ref={geoMapRef}
