@@ -11,6 +11,7 @@ export interface GeoMapChartProps {
   endColor: string;
   districts: GeoMapChartDistrict[];
   selectedId?: string;
+  onHover?: (id: string | undefined) => unknown;
   onSelect?: (id: string | undefined) => unknown;
   sortFn?: (a: GeoMapChartDistrict, b: GeoMapChartDistrict) => number;
 }
@@ -25,6 +26,7 @@ interface TooltipData {
   x: number;
   y: number;
   text: string;
+  id: string;
 }
 
 export const GeoMapChart = ({
@@ -32,6 +34,7 @@ export const GeoMapChart = ({
   endColor,
   districts,
   selectedId,
+  onHover,
   onSelect,
   sortFn = (a, b) => a.value - b.value,
 }: GeoMapChartProps) => {
@@ -66,7 +69,7 @@ export const GeoMapChart = ({
       return;
     }
 
-    setTooltip({ ...position, text: district.label });
+    setTooltip({ ...position, text: district.label, id: district.id });
   }, [selectedId, districts]);
 
   return (
@@ -74,6 +77,7 @@ export const GeoMapChart = ({
       {tooltip &&
         createPortal(
           <div
+            onClick={() => onSelect?.(tooltip.id)}
             style={{
               position: "absolute",
               left: `${tooltip.x}px`,
@@ -84,6 +88,7 @@ export const GeoMapChart = ({
               padding: "0px 4px 0px 4px",
               borderRadius: 4,
               zIndex: 100,
+              cursor: "pointer",
             }}
           >
             <Text
@@ -102,12 +107,15 @@ export const GeoMapChart = ({
         ref={geoMapRef}
         districts={mapDistricts}
         selectedId={selectedId}
-        onHover={(district) => {
+        onSelect={(district) => {
           onSelect?.(district.id);
+        }}
+        onHover={(district) => {
+          onHover?.(district.id);
         }}
         onHoverOut={() => {
           setTooltip(undefined);
-          onSelect?.(undefined);
+          onHover?.(undefined);
         }}
       />
     </>

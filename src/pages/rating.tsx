@@ -1,15 +1,15 @@
-import { Flex, Typography } from "antd";
+import { Typography } from "antd";
 import { useMemo, useState } from "react";
-import { CloseIcon } from "../shared/ui/close-icon";
 import {
   GeoMapLegend,
   GeoMapLegendDivider,
   GeoMapLegendItem,
 } from "../shared/ui/geo-map-chart";
-import { theme } from "../shared/ui/theme";
 import { GeoBarChart } from "../widgets/geo-bar-chart";
 import { GeoMapChart, GeoMapChartDistrict } from "../widgets/geo-map-chart";
 import { GeoMapLayout } from "../widgets/geo-map-layout";
+import { GeoMapModalItem } from "../widgets/geo-map-modal";
+import { GeoMapModal } from "../widgets/geo-map-modal/geo-map-modal";
 
 const { Title } = Typography;
 
@@ -74,7 +74,11 @@ export default function Rating() {
           <>
             <GeoMapChart
               selectedId={selected || hovered}
-              onSelect={(id) => setHovered(id)}
+              onHover={(id) => setHovered(id)}
+              onSelect={(id) => {
+                setSelected(id);
+                showModal();
+              }}
               startColor="#03A609"
               endColor="#D0D2CD"
               districts={districts}
@@ -83,63 +87,21 @@ export default function Rating() {
         }
         modal={
           isModalOpen && (
-            <Flex
-              style={{
-                width: "100%",
-                height: "100%",
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                backgroundColor: `rgba(0, 0, 0, 0.2)`,
-                zIndex: 1000,
+            <GeoMapModal
+              title={selectedDistrict?.label}
+              onClose={() => {
+                closeModal();
+                setSelected(undefined);
               }}
-              align="center"
-              justify="center"
             >
-              <div
-                style={{
-                  top: "50%",
-                  left: "50%",
-                  backgroundColor: theme.colors.white,
-                  width: 522,
-                }}
-              >
-                <div
-                  style={{
-                    position: "relative",
-                    padding: 24,
-                  }}
-                >
-                  <Title
-                    level={2}
-                    style={{
-                      textTransform: "uppercase",
-                      padding: 0,
-                      margin: 0,
-                      paddingBottom: 24,
-                    }}
-                  >
-                    {selectedDistrict?.label}
-                  </Title>
-
-                  <div
-                    onClick={() => {
-                      closeModal();
-                      setSelected(undefined);
-                    }}
-                    style={{
-                      position: "absolute",
-                      top: 14,
-                      right: 14,
-                      cursor: "pointer",
-                    }}
-                  >
-                    <CloseIcon />
-                  </div>
-                </div>
-              </div>
-            </Flex>
+              {new Array(30).fill("").map((_, i) => (
+                <GeoMapModalItem
+                  label={`Письки сиськи ${i}`}
+                  value={(i * 10).toString()}
+                  unit="руб/кв.м"
+                />
+              ))}
+            </GeoMapModal>
           )
         }
         legend={
