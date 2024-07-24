@@ -1,7 +1,7 @@
 import { Typography } from "antd";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { generateGradientColors, hexToRgb, rgbToHex } from "../shared/lib";
-import { GeoMap, GeoMapDistrict } from "../shared/ui/geo-map-chart";
+import { GeoMap, GeoMapDistrict, GeoMapRef } from "../shared/ui/geo-map-chart";
 
 const { Text } = Typography;
 
@@ -36,6 +36,8 @@ export const GeoMapChart = ({
 }: GeoMapChartProps) => {
   const [tooltip, setTooltip] = useState<TooltipData | undefined>(undefined);
 
+  const geoMapRef = useRef<GeoMapRef>(null);
+
   const mapDistricts: GeoMapDistrict[] = useMemo(() => {
     const size = districts.length;
     const colors = generateGradientColors(
@@ -49,6 +51,22 @@ export const GeoMapChart = ({
       label: x.label,
     }));
   }, [startColor, endColor, districts, sortFn]);
+
+  useEffect(() => {
+    const district = districts.find((x) => x.id === selectedId);
+
+    if (!district) {
+      return;
+    }
+
+    const position = geoMapRef.current?.getDistrictPosition(district.id);
+
+    if (!position) {
+      return;
+    }
+
+    setTooltip({ ...position, text: district.label });
+  }, [selectedId, districts]);
 
   return (
     <>
@@ -78,11 +96,10 @@ export const GeoMapChart = ({
       )}
 
       <GeoMap
+        ref={geoMapRef}
         districts={mapDistricts}
         selectedId={selectedId}
-        onSelect={onSelect}
-        onHover={({ position, district }) => {
-          setTooltip({ ...position, text: district.label });
+        onHover={(district) => {
           onSelect?.(district.id);
         }}
         onHoverOut={() => {

@@ -1,5 +1,6 @@
 import { Flex, Typography } from "antd";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useEffect, useRef, useState } from "react";
+import { usePrevious } from "../../lib";
 import { theme } from "../theme";
 
 const { Title } = Typography;
@@ -8,20 +9,51 @@ export type GeoMapLegendItemProps = {
   prefix?: string | number;
   title: string;
   value?: string;
+  active?: boolean;
+  onSelect?: () => unknown;
 } & PropsWithChildren;
 
 export const GeoMapLegendItem = ({
   prefix,
   title,
   value,
+  active = false,
+  onSelect,
 }: GeoMapLegendItemProps) => {
+  const [lastActive] = usePrevious(active, 1);
+  const [isIntersecting, setIsIntersecting] = useState(false);
+
+  const itemRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (!lastActive && active && !isIntersecting) {
+      itemRef.current?.scrollIntoView?.({ behavior: "smooth" });
+    }
+  }, [active, lastActive, isIntersecting]);
+
+  useEffect(() => {
+    const child = itemRef.current;
+
+    const observer = new IntersectionObserver(([entry]) => {
+      setIsIntersecting(entry.isIntersecting);
+    });
+
+    observer.observe(child!);
+
+    return () => observer.unobserve(child!);
+  }, []);
+
   return (
     <Flex
+      ref={itemRef}
       align="center"
       justify="space-between"
       style={{
         padding: "12px 32px",
+        backgroundColor: active ? "#F8F8F8" : "transparent",
+        cursor: "pointer",
       }}
+      onMouseMove={() => onSelect?.()}
     >
       <Flex gap={12} align="center">
         {prefix !== undefined && (

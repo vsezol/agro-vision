@@ -1,5 +1,5 @@
 import { Typography } from "antd";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   GeoMapLegend,
   GeoMapLegendDivider,
@@ -18,13 +18,20 @@ interface RatingItem {
 export default function Rating() {
   const [selected, setSelected] = useState<string | undefined>(undefined);
 
-  const ratingItems: RatingItem[] = new Array(20)
-    .fill("Башмаковский")
-    .map((label) => ({ label }));
+  const ratingItems: RatingItem[] = useMemo(
+    () => new Array(27).fill("Башмаковский").map((label) => ({ label })),
+    []
+  );
 
-  const districts: GeoMapChartDistrict[] = new Array(27)
-    .fill("")
-    .map((_, i) => ({ id: `${i + 1}`, value: i, label: `District ${i + 1}` }));
+  const districts: GeoMapChartDistrict[] = useMemo(
+    () =>
+      new Array(27).fill("").map((_, i) => ({
+        id: `${i + 1}`,
+        value: i,
+        label: `District ${i + 1}`,
+      })),
+    []
+  );
 
   return (
     <GeoMapLayout
@@ -56,7 +63,12 @@ export default function Rating() {
           {ratingItems.map(({ label }, index) => (
             <div key={index}>
               {index !== 0 && <GeoMapLegendDivider />}
-              <GeoMapLegendItem prefix={index + 1} title={label} />
+              <GeoMapLegendItem
+                active={(index + 1).toString() === selected}
+                prefix={index + 1}
+                title={label}
+                onSelect={() => setSelected((index + 1).toString())}
+              />
             </div>
           ))}
         </GeoMapLegend>
