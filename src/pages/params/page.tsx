@@ -40,7 +40,7 @@ const options: SelectOption[] = [
   },
 ];
 
-export default function Params() {
+export default function ParamsPage() {
   const [value, setValue] = useState("1");
 
   return (

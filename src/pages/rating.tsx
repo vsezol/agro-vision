@@ -19,7 +19,7 @@ interface RatingItem {
 
 const LEGEND_WIDTH_PX = 324;
 
-export default function Rating() {
+export default function RatingPage() {
   const [hovered, setHovered] = useState<string | undefined>(undefined);
   const [selected, setSelected] = useState<string | undefined>(undefined);
 

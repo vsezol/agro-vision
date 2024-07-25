@@ -1,5 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
+import { withGuards } from "../shared/lib";
 import { Routes } from "../shared/routes";
+import { HasUser } from "./guards";
 import { Layout } from "./layout";
 
 export const router = createBrowserRouter([
@@ -7,15 +9,33 @@ export const router = createBrowserRouter([
     path: "/",
     element: <Layout />,
     children: [
+      withGuards(
+        {
+          path: Routes.Rating,
+          lazy: () =>
+            import("../pages/rating").then((x) => ({ Component: x.default })),
+        },
+        <HasUser to={Routes.Auth} />
+      ),
+      withGuards(
+        {
+          path: Routes.Params,
+          lazy: () =>
+            import("../pages/params").then((x) => ({ Component: x.default })),
+        },
+        <HasUser to={Routes.Auth} />
+      ),
       {
-        path: Routes.Rating,
+        path: Routes.Auth,
         lazy: () =>
-          import("../pages/rating").then((x) => ({ Component: x.default })),
+          import("../pages/auth").then((x) => ({ Component: x.default })),
       },
       {
-        path: Routes.Params,
+        path: Routes.RestoreAccess,
         lazy: () =>
-          import("../pages/params").then((x) => ({ Component: x.default })),
+          import("../pages/restore-access").then((x) => ({
+            Component: x.default,
+          })),
       },
     ],
   },

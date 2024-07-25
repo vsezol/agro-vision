@@ -38,7 +38,19 @@ function App() {
               optionSelectedFontWeight: 400,
               colorText: theme.colors.active,
             },
-            Modal: {},
+            Input: {
+              borderRadiusLG: 4,
+            },
+            Checkbox: {
+              colorText: "#8D8D8D",
+              fontSize: 12,
+            },
+            Button: {
+              borderRadiusLG: 4,
+              colorPrimary: theme.colors.active,
+              colorPrimaryHover: theme.colors.active,
+              colorPrimaryActive: theme.colors.darkGray,
+            },
           },
         }}
       >

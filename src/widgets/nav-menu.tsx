@@ -31,6 +31,7 @@ export const NavMenu = () => {
     const name = items.find((x) => x.href === pathname)?.name;
 
     if (!name) {
+      setCurrent(undefined);
       return;
     }
 
