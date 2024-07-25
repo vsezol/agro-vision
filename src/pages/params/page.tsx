@@ -4,10 +4,10 @@ import {
   GeoMapLegend,
   GeoMapLegendDivider,
   GeoMapLegendItem,
-} from "../shared/ui/geo-map-chart";
-import { Select, SelectOption } from "../shared/ui/select";
-import { GeoBarChart } from "../widgets/geo-bar-chart";
-import { GeoMapLayout } from "../widgets/geo-map-layout";
+} from "../../shared/ui/geo-map-chart";
+import { Select, SelectOption } from "../../shared/ui/select";
+import { GeoBarChart } from "../../widgets/geo-bar-chart";
+import { GeoMapLayout } from "../../widgets/geo-map-layout";
 
 const options: SelectOption[] = [
   {
