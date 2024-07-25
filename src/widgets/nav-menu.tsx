@@ -1,6 +1,6 @@
-import { Menu, MenuProps } from "antd";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Menu } from "antd";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Routes } from "../shared/routes";
 
 interface MenuItem {
@@ -23,17 +23,25 @@ const items: MenuItem[] = [
 ];
 
 export const NavMenu = () => {
-  const [current, setCurrent] = useState(items[0].name);
+  const [current, setCurrent] = useState<string | undefined>();
 
-  const onClick: MenuProps["onClick"] = (e) => {
-    setCurrent(e.key);
-  };
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    const name = items.find((x) => x.href === pathname)?.name;
+
+    if (!name) {
+      return;
+    }
+
+    setCurrent(name);
+  }, [pathname]);
+
   const navigate = useNavigate();
 
   return (
     <Menu
-      onClick={onClick}
-      selectedKeys={[current]}
+      selectedKeys={[current ?? ""]}
       mode="horizontal"
       items={items.map((x) => ({
         key: x.name,
