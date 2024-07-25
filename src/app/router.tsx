@@ -37,6 +37,13 @@ export const router = createBrowserRouter([
             Component: x.default,
           })),
       },
+      {
+        path: Routes.RestoreAccessSuccess,
+        lazy: () =>
+          import("../pages/restore-access-success").then((x) => ({
+            Component: x.default,
+          })),
+      },
     ],
   },
 ]);

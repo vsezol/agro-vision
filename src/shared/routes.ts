@@ -3,6 +3,7 @@ export enum Routes {
   Params = "/params",
   About = "/about",
   Auth = "/auth",
-  RestoreAccess = "/restore-access",
+  RestoreAccess = "/restore",
+  RestoreAccessSuccess = "/restore-success",
   ReportBug = "/report-bug",
 }

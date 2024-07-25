@@ -1,13 +1,14 @@
-import { Button, Flex, Input, Typography } from "antd";
+import { Button, Flex, Typography } from "antd";
 import { useNavigate } from "react-router-dom";
 import wallpaperUrl from "../assets/wallpaper.jpeg";
 import { Routes } from "../shared/routes";
 import { ArrowBackIcon } from "../shared/ui/arrow-back-icon";
+import { MailIcon } from "../shared/ui/mail-icon";
 import { theme } from "../shared/ui/theme";
 
-const { Title, Link, Text } = Typography;
+const { Title, Text } = Typography;
 
-export default function RestoreAccessPage() {
+export default function RestoreAccessSuccessPage() {
   const navigate = useNavigate();
 
   return (
@@ -34,7 +35,7 @@ export default function RestoreAccessPage() {
         <Button
           type="link"
           style={{ position: "absolute", top: 5, left: -5 }}
-          onClick={() => navigate(Routes.Auth)}
+          onClick={() => navigate(Routes.RestoreAccess)}
         >
           <ArrowBackIcon />
         </Button>
@@ -50,43 +51,29 @@ export default function RestoreAccessPage() {
             textAlign: "center",
           }}
         >
-          Восстановление доступа
+          Готово
         </Title>
         <Text
           style={{
-            marginBottom: 22,
+            marginBottom: 14,
             textAlign: "center",
           }}
         >
-          На указанную почту придет письмо с новым паролем
+          Отправили новый пароль на вашу почту
         </Text>
-        <Input
-          type="email"
-          size="large"
-          placeholder="Email"
-          style={{ marginBottom: 40 }}
-        />
+
+        <Flex justify="center" style={{ marginBottom: 18 }}>
+          <MailIcon />
+        </Flex>
+
         <Button
           size="large"
           type="primary"
-          style={{ marginBottom: 18, textTransform: "uppercase" }}
-          onClick={() => navigate(Routes.RestoreAccessSuccess)}
+          style={{ textTransform: "uppercase" }}
+          onClick={() => navigate(Routes.Auth)}
         >
-          Сбросить пароль
+          войти с новым паролем
         </Button>
-        <Text style={{ color: theme.colors.gray, fontSize: 12 }}>
-          Нет аккаунта? Вы можете{" "}
-          <Link
-            href={"https://vsezol.com"}
-            style={{
-              color: theme.colors.active,
-              fontSize: 12,
-              textDecoration: "underline",
-            }}
-          >
-            получить доступ к сервису
-          </Link>
-        </Text>
       </Flex>
     </Flex>
   );
