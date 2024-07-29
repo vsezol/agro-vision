@@ -1,9 +1,11 @@
 import { ConfigProvider } from "antd";
 import { StrictMode } from "react";
 import { RouterProvider } from "react-router-dom";
-import { setVhVariable, useWindowResize } from "../shared/lib";
+import { setVhVariable, store, useWindowResize } from "../shared/lib";
 import { theme } from "../shared/ui/theme";
 import { router } from "./router";
+
+import { Provider } from "react-redux";
 
 function App() {
   useWindowResize(setVhVariable);
@@ -50,11 +52,14 @@ function App() {
               colorPrimary: theme.colors.active,
               colorPrimaryHover: theme.colors.active,
               colorPrimaryActive: theme.colors.darkGray,
+              colorBgContainerDisabled: "#E2E2E2",
             },
           },
         }}
       >
-        <RouterProvider router={router} />
+        <Provider store={store}>
+          <RouterProvider router={router} />
+        </Provider>
       </ConfigProvider>
     </StrictMode>
   );

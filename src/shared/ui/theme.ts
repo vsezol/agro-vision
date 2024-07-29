@@ -3,6 +3,7 @@ export interface Theme {
     white: string;
     background: string;
     active: string;
+    error: string;
     gray: string;
     darkGray: string;
   };
@@ -21,6 +22,7 @@ export const theme: Theme = {
     active: "#111111",
     gray: "#BCBCBC",
     darkGray: "#707070",
+    error: "#E10000",
   },
   font: {
     h1: {

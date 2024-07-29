@@ -1,7 +1,8 @@
 import { Navigate, NavigateProps, Outlet } from "react-router-dom";
+import { useIsSingIn } from "../features/auth";
 
-export const HasUser = (props: NavigateProps) => {
-  const hasUser = true;
+export const IsSignIn = (props: NavigateProps) => {
+  const isSignIn = useIsSingIn();
 
-  return hasUser ? <Outlet /> : <Navigate {...props} />;
+  return isSignIn ? <Outlet /> : <Navigate {...props} />;
 };

@@ -7,11 +7,11 @@ export {
   listenerMiddleware,
   registerSlice,
   store,
-  useAction,
-  useActionWithDeps,
   useAppDispatch,
   useAppSelector,
 } from "./redux";
+export { ResponseErrorStatus, toResponseError } from "./response-error";
+export type { ResponseError } from "./response-error";
 export type { RGB } from "./rgb";
 export { rgbToHex } from "./rgb-to-hex";
 export { setVhVariable } from "./set-vh-variable";

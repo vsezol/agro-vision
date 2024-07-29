@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import { withGuards } from "../shared/lib";
 import { Routes } from "../shared/routes";
-import { HasUser } from "./guards";
+import { IsSignIn } from "./guards";
 import { Layout } from "./layout";
 
 export const router = createBrowserRouter([
@@ -15,7 +15,7 @@ export const router = createBrowserRouter([
           lazy: () =>
             import("../pages/rating").then((x) => ({ Component: x.default })),
         },
-        <HasUser to={Routes.Auth} />
+        <IsSignIn to={Routes.Auth} />
       ),
       withGuards(
         {
@@ -23,7 +23,7 @@ export const router = createBrowserRouter([
           lazy: () =>
             import("../pages/params").then((x) => ({ Component: x.default })),
         },
-        <HasUser to={Routes.Auth} />
+        <IsSignIn to={Routes.Auth} />
       ),
       {
         path: Routes.Auth,
