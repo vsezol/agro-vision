@@ -9,6 +9,7 @@ import {
   ResponseError,
   createBaseSelector,
   registerSlice,
+  setSession,
   toResponseError,
 } from "../shared/lib";
 
@@ -45,8 +46,8 @@ export interface SignInRequest {
 export interface SignInResponse {
   data?: {
     email: string;
-    accessToken: string | undefined;
-    refreshToken: string | undefined;
+    accessToken: string;
+    refreshToken: string;
   };
   error?: ResponseError;
 }
@@ -61,11 +62,19 @@ const signIn = createAsyncThunk<SignInResponse, SignInRequest>(
     );
 
     if (!error) {
+      const accessToken = data.accessToken!;
+      const refreshToken = data.accessToken!;
+
+      setSession({
+        accessToken,
+        refreshToken,
+      });
+
       return {
         data: {
           email,
-          accessToken: data?.accessToken,
-          refreshToken: data?.refreshToken,
+          accessToken,
+          refreshToken,
         },
       };
     }

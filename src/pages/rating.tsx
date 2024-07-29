@@ -99,6 +99,7 @@ export default function RatingPage() {
                   label={`Письки сиськи ${i}`}
                   value={(i * 10).toString()}
                   unit="руб/кв.м"
+                  key={i}
                 />
               ))}
             </GeoMapModal>
