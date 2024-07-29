@@ -1,6 +1,7 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
 import { SignInResponse, sessionStore } from "../entities/session";
+import { useRequestPasswordResetMutation } from "../shared/api";
 import { ResponseErrorStatus, useAppDispatch } from "../shared/lib";
 
 export const useIsSingIn = (): boolean => {
@@ -13,10 +14,16 @@ export interface SignInData {
 }
 
 export interface SignInResult {
-  error?: {
-    text: string;
-  };
+  error?: BaseError;
 }
+
+interface BaseError {
+  text: string;
+}
+
+const defaultError: BaseError = {
+  text: "Что-то пошло не так...",
+};
 
 export const useSignIn = () => {
   const dispatch = useAppDispatch();
@@ -40,13 +47,37 @@ export const useSignIn = () => {
 
         default:
           return {
-            error: {
-              text: "Что-то пошло не так...",
-            },
+            error: defaultError,
           };
       }
     }
 
     return {};
+  };
+};
+
+export interface RequestPasswordResetData {
+  email: string;
+}
+
+export interface RequestPasswordResetResult {
+  error?: BaseError;
+}
+
+export const useRequestPasswordReset = () => {
+  const [reset] = useRequestPasswordResetMutation();
+
+  return {
+    reset: async (email: string): Promise<RequestPasswordResetResult> => {
+      const response = await reset({ passwordResetRequest: { email } });
+
+      if (response.error) {
+        return {
+          error: defaultError,
+        };
+      }
+
+      return {};
+    },
   };
 };

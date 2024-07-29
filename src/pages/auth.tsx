@@ -1,4 +1,5 @@
 import { Button, Checkbox, Flex, Form, Input, Typography } from "antd";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import wallpaperUrl from "../assets/wallpaper.jpeg";
@@ -12,11 +13,12 @@ export default function AuthPage() {
   const navigate = useNavigate();
   const signIn = useSignIn();
 
+  const [error, setError] = useState<undefined | string>();
+
   const {
     control,
     handleSubmit,
-    formState: { errors },
-    setError,
+    formState: { isValid },
   } = useForm<SignInData>({
     defaultValues: {
       email: "",
@@ -28,10 +30,11 @@ export default function AuthPage() {
     const { error } = await signIn(data);
 
     if (error) {
-      setError("root", { message: error.text });
+      setError(error.text);
       return;
     }
 
+    setError(undefined);
     navigate(Routes.Rating);
   };
 
@@ -72,6 +75,9 @@ export default function AuthPage() {
           <Controller
             name="email"
             control={control}
+            rules={{
+              required: true,
+            }}
             render={({ field: { onChange, value } }) => (
               <Input
                 type="email"
@@ -86,6 +92,9 @@ export default function AuthPage() {
           <Controller
             name="password"
             control={control}
+            rules={{
+              required: true,
+            }}
             render={({ field: { onChange, value } }) => (
               <Input.Password
                 size="large"
@@ -114,7 +123,7 @@ export default function AuthPage() {
 
           <Text
             style={{
-              visibility: errors.root?.message ? "visible" : "hidden",
+              visibility: error ? "visible" : "hidden",
               color: theme.colors.error,
               fontSize: theme.font.text.size,
               fontWeight: 400,
@@ -123,12 +132,13 @@ export default function AuthPage() {
               marginBottom: 4,
             }}
           >
-            {errors.root?.message ?? " "}
+            {error ?? " "}
           </Text>
 
           <Button
             size="large"
             type={"primary"}
+            disabled={!isValid}
             htmlType="submit"
             style={{ marginBottom: 18, textTransform: "uppercase" }}
           >

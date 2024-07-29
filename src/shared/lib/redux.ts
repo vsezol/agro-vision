@@ -39,10 +39,15 @@ export const registerSlice = (slices: Slice[]) => {
   slices.forEach((x) => sliceSet.add(x));
 
   const reducer = combineReducers({
-    ...Array.from(sliceSet).reduce((acc, slice) => {
-      acc[slice.name] = slice.reducer;
-      return acc;
-    }, {} as Record<string, unknown>),
+    ...Array.from(sliceSet).reduce(
+      (acc, slice) => {
+        acc[slice.name] = slice.reducer;
+        return acc;
+      },
+      {
+        [agroVisionApi.reducerPath]: agroVisionApi.reducer,
+      } as Record<string, unknown>
+    ),
   });
 
   store.replaceReducer(reducer);
