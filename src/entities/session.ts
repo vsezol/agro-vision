@@ -7,7 +7,9 @@ import {
 import { agroVisionApi } from "../shared/api";
 import {
   ResponseError,
+  Session,
   createBaseSelector,
+  getSession,
   registerSlice,
   setSession,
   toResponseError,
@@ -30,11 +32,17 @@ const sessionSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(signIn.fulfilled, (state, { payload }) => {
-      state.email = payload.data?.email;
-      state.accessToken = payload.data?.accessToken;
-      state.refreshToken = payload.data?.refreshToken;
-    });
+    builder
+      .addCase(signIn.fulfilled, (state, { payload }) => {
+        state.email = payload.data?.email;
+        state.accessToken = payload.data?.accessToken;
+        state.refreshToken = payload.data?.refreshToken;
+      })
+      .addCase(load.fulfilled, (state, { payload }) => {
+        state.email = payload?.email;
+        state.accessToken = payload?.accessToken;
+        state.refreshToken = payload?.refreshToken;
+      });
   },
 });
 
@@ -52,6 +60,12 @@ export interface SignInResponse {
   error?: ResponseError;
 }
 
+const load = createAsyncThunk("session/load", () => {
+  const session = getSession();
+
+  return session;
+});
+
 const signIn = createAsyncThunk<SignInResponse, SignInRequest>(
   "session/signIn",
   async ({ email, password }, { dispatch }) => {
@@ -66,6 +80,7 @@ const signIn = createAsyncThunk<SignInResponse, SignInRequest>(
       const refreshToken = data.accessToken!;
 
       setSession({
+        email,
         accessToken,
         refreshToken,
       });
@@ -93,6 +108,7 @@ const isSignIn = createSelector(baseSelector, (state) => Boolean(state.email));
 
 export interface SessionStore {
   actions: {
+    load: AsyncThunk<Session | undefined, void, object>;
     signIn: AsyncThunk<SignInResponse, SignInRequest, object>;
   };
   selectors: {
@@ -102,6 +118,7 @@ export interface SessionStore {
 
 export const sessionStore: SessionStore = {
   actions: {
+    load,
     signIn,
   },
   selectors: {

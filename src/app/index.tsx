@@ -6,6 +6,7 @@ import { theme } from "../shared/ui/theme";
 import { router } from "./router";
 
 import { Provider } from "react-redux";
+import { Loader } from "./loader";
 
 function App() {
   useWindowResize(setVhVariable);
@@ -58,7 +59,9 @@ function App() {
         }}
       >
         <Provider store={store}>
-          <RouterProvider router={router} />
+          <Loader>
+            <RouterProvider router={router} />
+          </Loader>
         </Provider>
       </ConfigProvider>
     </StrictMode>

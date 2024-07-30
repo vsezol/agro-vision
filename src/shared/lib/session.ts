@@ -3,6 +3,7 @@ import { Storage } from "./storage";
 const STORAGE_KEY = "SESSION";
 
 export interface Session {
+  email: string;
   accessToken: string;
   refreshToken: string;
 }

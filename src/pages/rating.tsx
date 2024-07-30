@@ -1,5 +1,6 @@
 import { Typography } from "antd";
 import { useMemo, useState } from "react";
+import { useLoadGeoMap } from "../features/geo-map";
 import {
   GeoMapLegend,
   GeoMapLegendDivider,
@@ -20,6 +21,8 @@ interface RatingItem {
 const LEGEND_WIDTH_PX = 324;
 
 export default function RatingPage() {
+  useLoadGeoMap();
+
   const [hovered, setHovered] = useState<string | undefined>(undefined);
   const [selected, setSelected] = useState<string | undefined>(undefined);
 
