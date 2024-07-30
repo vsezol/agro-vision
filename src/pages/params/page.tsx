@@ -56,7 +56,11 @@ export default function ParamsPage() {
   const [value, setValue] = useState<SelectValue>("humus");
 
   const select = (
-    <Select value={value} onChange={(x) => setValue(x)} options={options} />
+    <Select
+      value={value}
+      onChange={(x) => setValue(x as SelectValue)}
+      options={options}
+    />
   );
 
   switch (value) {
