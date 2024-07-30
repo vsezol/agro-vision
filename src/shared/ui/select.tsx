@@ -3,15 +3,15 @@ import { CircleFillIcon } from "./circle-fill-icon";
 import { CircleIcon } from "./circle-icon";
 import { theme } from "./theme";
 
-export interface SelectOption {
+export interface SelectOption<T extends string = string> {
   label: string;
-  value: string;
+  value: T;
 }
 
-export interface SelectProps {
+export interface SelectProps<T extends string = string> {
   value: string;
-  onChange?: (value: string) => void;
-  options: SelectOption[];
+  onChange?: (value: T) => void;
+  options: SelectOption<T>[];
 }
 
 export const Select = ({ options, value, onChange }: SelectProps) => {

@@ -3,15 +3,17 @@ import { generateGradientColors, hexToRgb, rgbToHex } from "../shared/lib";
 import { BarChart } from "../shared/ui/bar-chart";
 
 export interface GeoBarChartProps {
-  title: string;
+  title?: string;
+  subtitle?: string;
   startColor: string;
   endColor: string;
   size: number;
-  legend: string[];
+  legend?: string[];
 }
 
 export const GeoBarChart = ({
   title,
+  subtitle,
   legend,
   startColor,
   endColor,
@@ -30,6 +32,12 @@ export const GeoBarChart = ({
   );
 
   return (
-    <BarChart title={title} items={items} itemWidth={38} legend={legend} />
+    <BarChart
+      title={title}
+      subtitle={subtitle}
+      items={items}
+      itemWidth={38}
+      legend={legend}
+    />
   );
 };

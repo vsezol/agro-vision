@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export enum ParamName {
   GrainYield,
   SunflowerYield,
@@ -35,4 +37,8 @@ export interface ParamsPageLegend {
 export interface ParamsPageLegendItem {
   label: string;
   value: string;
+}
+
+export interface ParamsPageChartProps {
+  select: ReactNode;
 }

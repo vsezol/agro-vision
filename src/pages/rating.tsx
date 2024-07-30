@@ -82,9 +82,9 @@ export default function RatingPage() {
                 setSelected(id);
                 showModal();
               }}
-              startColor="#03A609"
-              endColor="#D0D2CD"
-              districts={districts}
+              startColor={["#03A609"]}
+              endColor={["#D0D2CD"]}
+              districts={[districts]}
             />
           </>
         }

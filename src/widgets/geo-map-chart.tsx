@@ -7,9 +7,9 @@ import { GeoMap, GeoMapDistrict, GeoMapRef } from "../shared/ui/geo-map-chart";
 const { Text } = Typography;
 
 export interface GeoMapChartProps {
-  startColor: string;
-  endColor: string;
-  districts: GeoMapChartDistrict[];
+  startColor: string[];
+  endColor: string[];
+  districts: GeoMapChartDistrict[][];
   selectedId?: string;
   onHover?: (id: string | undefined) => unknown;
   onSelect?: (id: string | undefined) => unknown;
@@ -42,22 +42,27 @@ export const GeoMapChart = ({
 
   const geoMapRef = useRef<GeoMapRef>(null);
 
-  const mapDistricts: GeoMapDistrict[] = useMemo(() => {
-    const size = districts.length;
-    const colors = generateGradientColors(
-      hexToRgb(startColor),
-      hexToRgb(endColor),
-      size
-    );
-    return [...districts].sort(sortFn).map((x, index) => ({
-      id: x.id,
-      color: rgbToHex(colors[index]),
-      label: x.label,
-    }));
+  const mapDistricts: GeoMapDistrict[][] = useMemo(() => {
+    return [...(districts ?? [])].map((items, index) => {
+      const size = items.length;
+      const colors = generateGradientColors(
+        hexToRgb(startColor[index]),
+        hexToRgb(endColor[index]),
+        size
+      );
+
+      return items.sort(sortFn).map((x, index) => {
+        return {
+          id: x.id,
+          color: rgbToHex(colors[index]),
+          label: x.label,
+        };
+      });
+    });
   }, [startColor, endColor, districts, sortFn]);
 
   useEffect(() => {
-    const district = districts.find((x) => x.id === selectedId);
+    const district = districts.flat().find((x) => x.id === selectedId);
 
     if (!district) {
       return;
@@ -105,7 +110,7 @@ export const GeoMapChart = ({
 
       <GeoMap
         ref={geoMapRef}
-        districts={mapDistricts}
+        districts={mapDistricts.flat()}
         selectedId={selectedId}
         onSelect={(district) => {
           onSelect?.(district.id);

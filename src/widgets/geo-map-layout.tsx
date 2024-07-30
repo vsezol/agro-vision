@@ -51,7 +51,13 @@ export const GeoMapLayout = ({
               <div style={{ maxWidth: 360, width: "100%" }}>{headerLeft}</div>
 
               {headerRight && (
-                <div style={{ flexGrow: 1, maxWidth: 532 }}>{headerRight}</div>
+                <Flex
+                  align="end"
+                  gap={24}
+                  style={{ flexGrow: 1, maxWidth: 532 }}
+                >
+                  {headerRight}
+                </Flex>
               )}
             </Flex>
           )}

@@ -1,96 +1,74 @@
 import { useState } from "react";
-import {
-  GeoMap,
-  GeoMapLegend,
-  GeoMapLegendDivider,
-  GeoMapLegendItem,
-} from "../../shared/ui/geo-map-chart";
+import { useLoadGeoMap } from "../../features/geo-map";
 import { Select, SelectOption } from "../../shared/ui/select";
-import { GeoBarChart } from "../../widgets/geo-bar-chart";
-import { GeoMapLayout } from "../../widgets/geo-map-layout";
+import { DefaultChart } from "./charts/default-chart";
+import { HumusChart } from "./charts/humus-chart";
+import { PotatoYieldChart } from "./charts/potato-yield-chart";
+import { SoilGradeChart } from "./charts/soil-grade-chart";
+import { SrupChart } from "./charts/srup-chart";
 
-const options: SelectOption[] = [
-  {
-    label: "Урожайность зерновых",
-    value: "1",
-  },
-  {
-    label: "Урожайность подсолнечника",
-    value: "2",
-  },
+type SelectValue =
+  | "availablePhosphorus"
+  | "availablePotassium"
+  | "phSaltExtract"
+  | "humus"
+  | "grainYield"
+  | "potatoYield"
+  | "sunflowerYield"
+  | "vegetableYield"
+  | "srup"
+  | "soilGrade";
+
+const options: SelectOption<SelectValue>[] = [
+  // {
+  //   label: "Урожайность зерновых",
+  //   value: "grainYield",
+  // },
+  // {
+  //   label: "Урожайность подсолнечника",
+  //   value: "sunflowerYield",
+  // },
   {
     label: "Урожайность картофеля",
-    value: "3",
+    value: "potatoYield",
   },
-  {
-    label: "Урожайность овощей открытого грунта",
-    value: "4",
-  },
+  // {
+  //   label: "Урожайность овощей открытого грунта",
+  //   value: "vegetableYield",
+  // },
   {
     label: "Гумус",
-    value: "5",
+    value: "humus",
   },
   {
     label: "Градация почв",
-    value: "6",
+    value: "soilGrade",
   },
   {
     label: "Средняя кадастровая стоимость",
-    value: "7",
+    value: "srup",
   },
 ];
 
 export default function ParamsPage() {
-  const [value, setValue] = useState("1");
+  useLoadGeoMap();
 
-  return (
-    <GeoMapLayout
-      headerLeft={
-        <Select value={value} onChange={(x) => setValue(x)} options={options} />
-      }
-      headerRight={
-        <GeoBarChart
-          title="Урожайность картофеля, т/га"
-          legend={["Высокая", "Низкая"]}
-          startColor="#03A609"
-          endColor="#FFDD9C"
-          size={14}
-        />
-      }
-      map={<GeoMap />}
-      legend={
-        <GeoMapLegend title="Содержание" unit="%">
-          <GeoMapLegendItem title="Башмаковский" value="12.9" />
-          <GeoMapLegendDivider />
-          <GeoMapLegendItem title="Башмаковский" value="12.9" />
-          <GeoMapLegendDivider />
-          <GeoMapLegendItem title="Башмаковский" value="12.9" />
-          <GeoMapLegendDivider />
-          <GeoMapLegendItem title="Башмаковский" value="12.9" />
-          <GeoMapLegendDivider />
-          <GeoMapLegendItem title="Башмаковский" value="12.9" />
-          <GeoMapLegendDivider />
-          <GeoMapLegendItem title="Башмаковский" value="12.9" />
-          <GeoMapLegendDivider />
-          <GeoMapLegendItem title="Башмаковский" value="12.9" />
-          <GeoMapLegendDivider />
-          <GeoMapLegendItem title="Башмаковский" value="12.9" />
-          <GeoMapLegendDivider />
-          <GeoMapLegendItem title="Башмаковский" value="12.9" />
-          <GeoMapLegendDivider />
-          <GeoMapLegendItem title="Башмаковский" value="12.9" />
-          <GeoMapLegendDivider />
-          <GeoMapLegendItem title="Башмаковский" value="12.9" />
-          <GeoMapLegendDivider />
-          <GeoMapLegendItem title="Башмаковский" value="12.9" />
-          <GeoMapLegendDivider />
-          <GeoMapLegendItem title="Башмаковский" value="12.9" />
-          <GeoMapLegendDivider />
-          <GeoMapLegendItem title="Башмаковский" value="12.9" />
-          <GeoMapLegendDivider />
-          <GeoMapLegendItem title="Башмаковский" value="12.9" />
-        </GeoMapLegend>
-      }
-    />
+  const [value, setValue] = useState<SelectValue>("humus");
+
+  const select = (
+    <Select value={value} onChange={(x) => setValue(x)} options={options} />
   );
+
+  switch (value) {
+    case "soilGrade":
+      return <SoilGradeChart select={select} />;
+    case "potatoYield":
+      return <PotatoYieldChart select={select} />;
+    case "srup":
+      return <SrupChart select={select} />;
+    case "humus":
+      return <HumusChart select={select} />;
+    default:
+      return <DefaultChart select={select} />;
+  }
 }
