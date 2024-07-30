@@ -1,5 +1,5 @@
 {
-  "schemaFile": "http://localhost:8080/v3/api-docs",
+  "schemaFile": "https://server.agvision.ru/v3/api-docs",
   "apiFile": "./src/shared/api/empty-api.ts",
   "apiImport": "emptyApi",
   "outputFile": "./src/shared/api/generated-api.ts",

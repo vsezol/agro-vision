@@ -1,16 +1,6 @@
 import { emptyApi as api } from "./empty-api";
 const injectedRtkApi = api.injectEndpoints({
   endpoints: (build) => ({
-    resetPassword: build.mutation<
-      ResetPasswordApiResponse,
-      ResetPasswordApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/api/v1/auth/reset-password`,
-        method: "POST",
-        body: queryArg.passwordResetConfirmation,
-      }),
-    }),
     requestPasswordReset: build.mutation<
       RequestPasswordResetApiResponse,
       RequestPasswordResetApiArg
@@ -42,18 +32,16 @@ const injectedRtkApi = api.injectEndpoints({
         body: queryArg.signInRequest,
       }),
     }),
-    sayHello: build.query<SayHelloApiResponse, SayHelloApiArg>({
-      query: () => ({ url: `/api/hello` }),
+    getData2022: build.query<GetData2022ApiResponse, GetData2022ApiArg>({
+      query: () => ({ url: `/api/data/2022` }),
+    }),
+    getData2021: build.query<GetData2021ApiResponse, GetData2021ApiArg>({
+      query: () => ({ url: `/api/data/2021` }),
     }),
   }),
   overrideExisting: false,
 });
 export { injectedRtkApi as generatedApi };
-export type ResetPasswordApiResponse =
-  /** status 200 Password successfully reset */ PasswordResetResponse;
-export type ResetPasswordApiArg = {
-  passwordResetConfirmation: PasswordResetConfirmation;
-};
 export type RequestPasswordResetApiResponse =
   /** status 200 Password reset email sent */ PasswordResetRequestResponse;
 export type RequestPasswordResetApiArg = {
@@ -74,18 +62,12 @@ export type SignInApiResponse =
 export type SignInApiArg = {
   signInRequest: SignInRequest;
 };
-export type SayHelloApiResponse = /** status 200 OK */ string;
-export type SayHelloApiArg = void;
-export type PasswordResetResponse = {
-  /** Message confirming the password was reset */
-  message?: string;
-};
-export type PasswordResetConfirmation = {
-  /** Token received in the password reset email */
-  token?: string;
-  /** New password */
-  newPassword?: string;
-};
+export type GetData2022ApiResponse =
+  /** status 200 Успешное получение данных за 2022 год */ Agrochem2022View[];
+export type GetData2022ApiArg = void;
+export type GetData2021ApiResponse =
+  /** status 200 Успешное получение данных за 2021 год */ Agrochem2021View[];
+export type GetData2021ApiArg = void;
 export type PasswordResetRequestResponse = {
   /** Message confirming the password reset email was sent */
   message?: string;
@@ -116,11 +98,53 @@ export type SignInRequest = {
   /** User's password */
   password?: string;
 };
+export type Agrochem2022View = {
+  /** Идентификатор записи */
+  id?: string;
+  /** Название региона */
+  regionName?: string;
+  /** Подвижный фосфор, мг/кг */
+  availablePhosphorus?: string;
+  /** Подвижный калий, мг/кг */
+  availablePotassium?: string;
+  /** рН солевой вытяжки, ед рН */
+  phSaltExtract?: string;
+  /** Гумус, % */
+  humus?: string;
+  /** Урожайность зерновых, центнера/га */
+  grainYield?: string;
+  /** Урожайность картофеля, тонны/га */
+  potatoYield?: string;
+  /** Урожайность подсолнечника, тонны/га */
+  sunflowerYield?: string;
+  /** Урожайность овощей открытого грунта, тонны/га */
+  vegetableYield?: string;
+  /** СРУП, руб/кв.м */
+  srup?: string;
+  /** Градация почв с учетом агрохим показателей */
+  soilGrade?: string;
+};
+export type Agrochem2021View = {
+  /** Идентификатор записи */
+  id?: string;
+  /** Название региона */
+  regionName?: string;
+  /** Обследованная площадь, тыс. га */
+  surveyedArea?: string;
+  /** Подвижный фосфор, мг/кг */
+  availablePhosphorus?: string;
+  /** Подвижный калий, мг/кг */
+  availablePotassium?: string;
+  /** рН солевой вытяжки, ед рН */
+  phSaltExtract?: string;
+  /** Гумус, % */
+  humus?: string;
+};
 export const {
-  useResetPasswordMutation,
   useRequestPasswordResetMutation,
   useSignUpMutation,
   useRefreshTokenMutation,
   useSignInMutation,
-  useSayHelloQuery,
+  useGetData2022Query,
+  useGetData2021Query,
 } = injectedRtkApi;
