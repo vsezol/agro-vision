@@ -32,7 +32,7 @@ export const GeoMapModal = ({ onClose, title, children }: GeoMapModalProps) => {
           left: "50%",
           backgroundColor: theme.colors.white,
           width: 522,
-          maxHeight: 468,
+          maxHeight: 484,
           height: "100%",
         }}
       >

@@ -5,7 +5,7 @@ const { Title, Text } = Typography;
 
 export type GeoMapModalItemProps = {
   label: string;
-  value: string;
+  value: string | number;
   unit: string;
 };
 

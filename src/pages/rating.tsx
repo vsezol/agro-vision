@@ -1,22 +1,20 @@
 import { Typography } from "antd";
 import { useMemo, useState } from "react";
+import { geoMapStore } from "../entities/geo-map";
 import { useLoadGeoMap } from "../features/geo-map";
+import { useAppSelector } from "../shared/lib";
 import {
   GeoMapLegend,
   GeoMapLegendDivider,
   GeoMapLegendItem,
 } from "../shared/ui/geo-map-chart";
 import { GeoBarChart } from "../widgets/geo-bar-chart";
-import { GeoMapChart, GeoMapChartDistrict } from "../widgets/geo-map-chart";
+import { GeoMapChart } from "../widgets/geo-map-chart";
 import { GeoMapLayout } from "../widgets/geo-map-layout";
 import { GeoMapModalItem } from "../widgets/geo-map-modal";
 import { GeoMapModal } from "../widgets/geo-map-modal/geo-map-modal";
 
 const { Title } = Typography;
-
-interface RatingItem {
-  label: string;
-}
 
 const LEGEND_WIDTH_PX = 324;
 
@@ -26,24 +24,11 @@ export default function RatingPage() {
   const [hovered, setHovered] = useState<string | undefined>(undefined);
   const [selected, setSelected] = useState<string | undefined>(undefined);
 
-  const ratingItems: RatingItem[] = useMemo(
-    () => new Array(27).fill("Башмаковский").map((label) => ({ label })),
-    []
-  );
-
-  const districts: GeoMapChartDistrict[] = useMemo(
-    () =>
-      new Array(27).fill("").map((_, i) => ({
-        id: `${i + 1}`,
-        value: i,
-        label: `District ${i + 1}`,
-      })),
-    []
-  );
+  const topDistricts = useAppSelector(geoMapStore.selectors.selectTop);
 
   const selectedDistrict = useMemo(
-    () => districts?.find((x) => x.id === selected),
-    [districts, selected]
+    () => topDistricts.find(({ id }) => id === (selected || hovered)),
+    [hovered, selected, topDistricts]
   );
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -84,44 +69,87 @@ export default function RatingPage() {
               }}
               startColor={["#03A609"]}
               endColor={["#D0D2CD"]}
-              districts={[districts]}
+              districts={[
+                topDistricts.map(({ name, id }, index) => ({
+                  id,
+                  label: name,
+                  value: index,
+                })),
+              ]}
             />
           </>
         }
         modal={
           isModalOpen && (
             <GeoMapModal
-              title={selectedDistrict?.label}
+              title={selectedDistrict?.name}
               onClose={() => {
                 closeModal();
                 setSelected(undefined);
               }}
             >
-              {new Array(30).fill("").map((_, i) => (
-                <GeoMapModalItem
-                  label={`Письки сиськи ${i}`}
-                  value={(i * 10).toString()}
-                  unit="руб/кв.м"
-                  key={i}
-                />
-              ))}
+              <GeoMapModalItem
+                label="Подвижный фосфор"
+                value={selectedDistrict?.values.availablePhosphorus ?? 0}
+                unit="мг/кг"
+              />
+              <GeoMapModalItem
+                label="Подвижный калий"
+                value={selectedDistrict?.values.availablePotassium ?? 0}
+                unit="мг/кг"
+              />
+              <GeoMapModalItem
+                label="PH солевой вытяжки"
+                value={selectedDistrict?.values.phSaltExtract ?? 0}
+                unit="ед"
+              />
+              <GeoMapModalItem
+                label="Гумус"
+                value={selectedDistrict?.values.humus ?? 0}
+                unit="%"
+              />
+              <GeoMapModalItem
+                label="Урожайность зерновых"
+                value={selectedDistrict?.values.grainYield ?? 0}
+                unit="ц/га"
+              />
+              <GeoMapModalItem
+                label="Урожайность картофеля"
+                value={selectedDistrict?.values.potatoYield ?? 0}
+                unit="т/га"
+              />
+              <GeoMapModalItem
+                label="Урожайность подсолнечника"
+                value={selectedDistrict?.values.sunflowerYield ?? 0}
+                unit="т/га"
+              />
+              <GeoMapModalItem
+                label="Урожайность овощей открытого грунта"
+                value={selectedDistrict?.values.vegetableYield ?? 0}
+                unit="т/га"
+              />
+              <GeoMapModalItem
+                label="Средняя кадастровая стоимость"
+                value={selectedDistrict?.values.srup ?? 0}
+                unit="руб/кв.м"
+              />
             </GeoMapModal>
           )
         }
         legend={
           <GeoMapLegend width={LEGEND_WIDTH_PX + "px"} title="Общий рейтинг">
-            {ratingItems.map(({ label }, index) => (
-              <div key={index}>
+            {topDistricts.map((item, index) => (
+              <div key={item.id}>
                 {index !== 0 && <GeoMapLegendDivider />}
                 <GeoMapLegendItem
-                  active={(index + 1).toString() === (selected || hovered)}
+                  active={item.id === (selected || hovered)}
                   prefix={index + 1}
-                  title={label}
+                  title={item.name}
                   onHover={() => {
-                    setHovered((index + 1).toString());
+                    setHovered(item.id);
                   }}
                   onSelect={() => {
-                    setSelected((index + 1).toString());
+                    setSelected(item.id);
                     showModal();
                   }}
                 />
