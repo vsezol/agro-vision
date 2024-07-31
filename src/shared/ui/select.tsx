@@ -12,9 +12,15 @@ export interface SelectProps<T extends string = string> {
   value: string;
   onChange?: (value: T) => void;
   options: SelectOption<T>[];
+  listHeight?: number;
 }
 
-export const Select = ({ options, value, onChange }: SelectProps) => {
+export const Select = ({
+  options,
+  value,
+  onChange,
+  listHeight,
+}: SelectProps) => {
   return (
     <UISelect
       labelRender={({ value }) =>
@@ -25,6 +31,7 @@ export const Select = ({ options, value, onChange }: SelectProps) => {
       onChange={onChange}
       value={value}
       defaultValue={value}
+      listHeight={listHeight}
     >
       {options?.map((x) => (
         <UISelect.Option key={x.value} value={x.value}>

@@ -13,17 +13,17 @@ import { ParamsPageChartProps } from "../contracts";
 
 const START_COLOR = "#03A609";
 const END_COLOR = "#FFDD9C";
-const BAR_TITLE = "Урожайность картофеля, т/га";
+const BAR_TITLE = "Урожайность подсолнечника, т/га";
 const BAR_LEGEND = ["Высокая", "Низкая"];
 const LEGEND_TITLE = "УРОЖАЙНОСТЬ";
 const LEGEND_UNIT = "т/га";
 
 const FILTER: SelectByTypeProps = {
-  type: "potatoYield",
+  type: "sunflowerYield",
   sort: "descending",
 };
 
-export const PotatoYieldChart = ({ select }: ParamsPageChartProps) => {
+export const SunflowerYieldChart = ({ select }: ParamsPageChartProps) => {
   const [hovered, setHovered] = useState<string | undefined>(undefined);
 
   const values = useAppSelector((state) =>
