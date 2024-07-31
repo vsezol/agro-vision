@@ -59,9 +59,10 @@ export const VegetableYieldChart = ({ select }: ParamsPageChartProps) => {
       }
       legend={
         <GeoMapLegend title={LEGEND_TITLE} unit={LEGEND_UNIT}>
-          {values.map(({ name, value, id }) => (
+          {values.map(({ name, value, id }, index) => (
             <div key={name}>
               <GeoMapLegendItem
+                prefix={index + 1}
                 title={name}
                 value={value.toString()}
                 active={id === hovered}

@@ -23,13 +23,13 @@ export const SoilGradeChart = ({ select }: ParamsPageChartProps) => {
   const cereals = useAppSelector((state) =>
     geoMapStore.selectors.selectByType(state, {
       type: "soilGradeCereals",
-      sort: "descending",
+      sort: "ascending",
     })
   );
   const rowHouses = useAppSelector((state) =>
     geoMapStore.selectors.selectByType(state, {
       type: "soilGradeRowHouses",
-      sort: "descending",
+      sort: "ascending",
     })
   );
 
@@ -71,7 +71,19 @@ export const SoilGradeChart = ({ select }: ParamsPageChartProps) => {
       }
       legend={
         <GeoMapLegend title={LEGEND_TITLE}>
-          {[cereals, rowHouses].flat().map(({ name, value, id }, index) => (
+          {cereals.map(({ name, value, id }, index) => (
+            <div key={name}>
+              <GeoMapLegendItem
+                prefix={index + 1}
+                title={name}
+                value={value.toString()}
+                active={id === hovered}
+                onHover={() => setHovered(id)}
+              />
+              <GeoMapLegendDivider />
+            </div>
+          ))}
+          {rowHouses.map(({ name, value, id }, index) => (
             <div key={name}>
               <GeoMapLegendItem
                 prefix={index + 1}
