@@ -1,5 +1,4 @@
 import { Flex, Layout, Typography } from "antd";
-import { Routes } from "../shared/routes";
 import { theme } from "../shared/ui/theme";
 
 const { Text, Link } = Typography;
@@ -14,12 +13,16 @@ export const Footer = () => {
 
         <Flex gap={32}>
           <Link
-            href={Routes.ReportBug}
+            href={"mailto:ag.vision@mail.ru"}
             style={{ color: theme.colors.darkGray }}
           >
             Сообщить об ошибке
           </Link>
-          <Link href={Routes.About} style={{ color: theme.colors.darkGray }}>
+
+          <Link
+            href={"https://main.agvision.ru"}
+            style={{ color: theme.colors.darkGray }}
+          >
             О нас
           </Link>
         </Flex>

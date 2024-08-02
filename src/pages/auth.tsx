@@ -147,7 +147,7 @@ export default function AuthPage() {
           <Text style={{ color: theme.colors.gray, fontSize: 12 }}>
             Нет аккаунта? Вы можете{" "}
             <Link
-              href={"https://vsezol.com"}
+              href={"https://main.agvision.ru"}
               style={{
                 color: theme.colors.active,
                 fontSize: 12,

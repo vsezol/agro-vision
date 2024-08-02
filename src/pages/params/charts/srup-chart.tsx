@@ -44,8 +44,8 @@ export const SrupChart = ({ select }: ParamsPageChartProps) => {
       }
       map={
         <GeoMapChart
-          startColor={[START_COLOR]}
-          endColor={[END_COLOR]}
+          startColor={[END_COLOR]}
+          endColor={[START_COLOR]}
           districts={[
             values.map(({ id, name, value }) => ({
               id,
