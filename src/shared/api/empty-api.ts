@@ -61,6 +61,7 @@ const baseQueryWithReauth: BaseQueryFn<
   );
 
   if (!refreshResult.data) {
+    setSession({ email: "", accessToken: "", refreshToken: "" });
     location.href = "/auth";
     return result;
   }
